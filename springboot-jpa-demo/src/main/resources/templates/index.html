@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<script type="text/javascript" src="/jquery-1.11.3.min.js"></script>
+<!-- <script type="text/javascript" src="/js/test.js"></script> -->
+</head>
+<body>
+	<div>
+			<p>id修改使用:<input type="text" name="id" id="id"/></p>
+			<p>userName不能重复:<input type="text" name="userName" id="userName"/></p>
+			<p>password:<input type="text" name="password" id="password"/></p>
+			<p>email不能重复:<input type="text" name="email" id="email"/></p>
+			<p>phoneNo不能重复:<input type="text" name="phoneNo" id="phoneNo"/></p>
+			<p>realName:<input type="text" name="realName" id="realName"/></p>
+			<input type="button" value="提交" id="submit"/>
+			<input type="button" value="修改" id="update"/>
+	</div>
+	<div>
+		<form>
+			<p>label:<input type="text" name="label" id="label"/></p>
+			<p>country:<input type="text" name="country" id="country"/></p>
+			<p>province:<input type="text" name="province" id="province"/></p>
+			<p>city:<input type="text" name="city" id="city"/></p>
+			<p>address:<input type="text" name="address" id="address"/></p>
+			<input type="button" value="提交address" id="submitAddress"/>
+		</form>
+	</div>
+	
+<!-- 	<div> -->
+<!-- 		<form> -->
+<!-- 			<p>sender:<input type="text" name="sender" id="sender"/></p> -->
+<!-- 			<p>addressee:<input type="text" name="addressee" id="addressee"/></p> -->
+<!-- 			<p>msgTitle:<input type="text" name="msgTitle" id="msgTitle"/></p> -->
+<!-- 			<p>msgText:<input type="text" name="msgText" id="msgText"/></p> -->
+<!-- 			<input type="button" value="提交email" id="submitEmails"/> -->
+<!-- 		</form> -->
+<!-- 	</div> -->
+	
+	<div>
+			<input type="button" value="查询所有" id="findAll"/>
+			<input type="text" value="0" placeholder="页数" id="page" name="page"/> 
+			<input type="text" value="15" placeholder="大小" id="size" name="size"/> 
+			<input type="text" value="id" placeholder="排序列" id="sortColumn" name="sortColumn"/> 
+			<input type="text" value="asc" placeholder="排序方式" id="direction" name="direction"/> 
+			<input type="text" value="1" placeholder="是否启用" id="isValid" name="isValid"/>
+			<input type="date" value="" placeholder="开始时间" id="createTimeStart" name="createTimeStart"/>
+			<input type="date" value="" placeholder="结束时间" id="createTimeEnd" name="createTimeEnd"/>
+			<input type="text" value="" placeholder="地址" id="addresses" name="addresses"/>
+	</div>
+	
+	<h3>测试多表联查</h3>
+	<div>
+		关联ID：<input type="text" value="11" name="webUser" id="webUser"/>
+		<input type="button" value="查询所有2" id="findAllAddress"/>
+	</div>
+	
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>USERNAME</td>
+					<td>EMAIL</td>
+					<td>PHONENO</td>
+					<td>REALNAME</td>
+					<td>DELETE</td>
+				</tr>
+			</thead>
+			<tbody id="content">
+			</tbody>
+		</table>
+	</div>
+</body>
+<script type="text/javascript">
+	
+	$(function(){
+		
+		$("#findAllAddress").click(function(){
+			alert("123");
+			$.post("/address/findAll.do",{
+				webUser:$("#webUser").val(),
+				id:$("#id").val()
+			},function(data){
+				alert(data.data.content);
+			});
+		});
+		
+		$("#submit").on('click', function() {
+			
+			var _userName = $("#userName").val();
+			var _password = $("#password").val();
+			var _email = $("#email").val();
+			var _phoneNo = $("#phoneNo").val();
+			var _realName = $("#realName").val();
+			
+			$.post("/webuser/save.do", {
+				userName : _userName,
+				password : _password,
+				email : _email,
+				phoneNo : _phoneNo,
+				realName : _realName
+			}, function(data) {
+				alert(data);
+			});
+		});
+		
+		
+		$("#submitAddress").on('click', function() {
+			
+			var _label = $("#label").val();
+			var _country = $("#country").val();
+			var _province = $("#province").val();
+			var _city = $("#city").val();
+			var _address = $("#address").val();
+			
+			$.post("/address/save.do", {
+				label : _label,
+				country : _country,
+				province : _province,
+				city : _city,
+				address : _address
+			}, function(data) {
+				alert(data.msg);
+			});
+		});
+ 
+		$("#update").on('click', function() {
+			
+			var _id = $("#id").val();
+			var _userName = $("#userName").val();
+			var _password = $("#password").val();
+			var _email = $("#email").val();
+			var _phoneNo = $("#phoneNo").val();
+			var _realName = $("#realName").val();
+			
+			$.post("/WebUser/update.do", {
+				id : _id,
+				userName : _userName,
+				password : _password,
+				email : _email,
+				phoneNo : _phoneNo,
+				realName : _realName
+			}, function(data) {
+				alert(data.msg);
+			});
+		});
+ 
+		$("#findAll").on(
+				'click',
+				function() {
+					$.post("/WebUser/findAll.do", {
+						page : $("#page").val(),
+						size : $("#size").val(),
+						sortColumn : $("#sortColumn").val(),
+						direction : $("#direction").val(),
+						userName : $("#userName").val(),
+						email : $("#email").val(),
+						phoneNo : $("#phoneNo").val(),
+						isValid : $("#isValid").val(),
+						createTimeStart : $("#createTimeStart").val(),
+						createTimeEnd : $("#createTimeEnd").val()
+					}, function(data) {
+						$("#content").html();
+						var html = "";
+						$.each(data.data.content, function(i, val) {
+							html += "<tr><td>" + val.id + "</td>" + "<td>"
+									+ val.userName + "</td>" + "<td>" + val.email
+									+ "</td>" + "<td>" + val.phoneNo + "</td>"
+									+ "<td>" + val.realName + "</td>"
+									+ '<td><a href="/WebUser/deleteOne.do?id='
+									+ val.id + '">删除</a></td></tr>';
+						});
+						$("#content").html(html);
+					});
+				});
+		
+	})
+ 
+	
+</script>
+</html>
