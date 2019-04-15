@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xgj.entity.UserNativeQuery;
+import com.xgj.entity.User;
 import com.xgj.redpository.UserRespository;
 import com.xgj.service.UserService;
 
@@ -22,11 +22,11 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping("/list")
-	public List<UserNativeQuery> getUserList(){
+	public List<User> getUserList(){
 		return userRespository.findAll();
 	}
 	@GetMapping("/query")
-	public List<UserNativeQuery> getUserByCondition(@RequestParam String name,int age){
+	public List<User> getUserByCondition(@RequestParam String name,int age){
 		return userService.findByNameOrAge(name, age);
 	}
 	
@@ -34,5 +34,5 @@ public class UserController {
 	public Object getUserListDetail(@RequestParam long id){
 		return userService.getUserWithAddrByid(id);
 	}
-	
+
 }

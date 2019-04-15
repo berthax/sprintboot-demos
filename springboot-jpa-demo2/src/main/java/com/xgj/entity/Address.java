@@ -24,8 +24,8 @@ public class Address extends BaseEntity{
 	@Column(name="city",nullable=false,columnDefinition="varchar(32) comment '城市'")
 	private String city;
 	
-	@Column(name="address_detail",nullable=false,columnDefinition="varchar(255) comment '具体地址'")
-	private String addressDetail;
+	@Column(name="address",nullable=false,columnDefinition="varchar(255) comment '具体地址'")
+	private String address;
 	
 	/**
 	 * 
@@ -76,12 +76,12 @@ public class Address extends BaseEntity{
 		this.city = city;
 	}
 
-	public String getAddressDetail() {
-		return addressDetail;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAddressDetail(String addressDetail) {
-		this.addressDetail = addressDetail;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public WebUser getWebUser() {

@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.xgj.entity.UserNativeQuery;
+import com.xgj.entity.User;
 
-public interface UserRespository extends JpaRepository<UserNativeQuery, Integer> {
+public interface UserRespository extends JpaRepository<User, Integer> {
 	
-	public List<UserNativeQuery> findByName(String username);
+	public List<User> findByName(String username);
 	
 	@Query(value="select * from user where name= ?1 or age= ?2",nativeQuery=true)
-	public List<UserNativeQuery> findByNameOrAge(String username,int age);
+	public List<User> findByNameOrAge(String username,int age);
 	
 }

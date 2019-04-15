@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xgj.entity.UserNativeQuery;
+import com.xgj.entity.User;
 import com.xgj.entity.UserWithAddress;
 import com.xgj.redpository.UserRespository;
 
@@ -23,22 +23,21 @@ public class UserService {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	public List<UserNativeQuery> findByName(String username) {
+	public List<User> findByName(String username) {
 		return userRespository.findByName(username);
 	}
 	
-	public List<UserNativeQuery> findByNameOrAge(String name,int age){
+	public List<User> findByNameOrAge(String name,int age){
 		return userRespository.findByNameOrAge(name, age);
 	}
 	
 	/**
-	 * jpa实现多表联查示例2，
-	 *     使用entityManager创建NativeQuery进行查询，但是此处，结果的返回最好不用Object接收，指定接收的类型，否则别人不知道都有什么
+	 * jpa实现多表联查;
 	 * @param id
 	 * @return
 	 */
 	@Transactional
-	public UserNativeQuery getUserWithAddrByid(Long id) {
+	public Object getUserWithAddrByid(Long id) {
 		/*List resultList = entityManager.createNativeQuery(
 				"select u.id id,u.age age,u.name name,a.name aname,a.completeaddress address from user u left join address a on u.address_id = a.id where u.id = :id")
 				.setParameter("id", id).getResultList();*/
@@ -47,10 +46,9 @@ public class UserService {
 				.setParameter("id", id).getSingleResult();*/
 		
 		Object result = entityManager.createNativeQuery(
-				"select u.id id,u.age age,u.address_id address_id, u.name name,a.label label,a.address_detail address_detail from user u left join address a on u.address_id = a.id where u.id = :id",
-				UserNativeQuery.class)
+				"select u.id id,u.age age,u.name name,a.name aname,a.completeaddress address from user u left join address a on u.address_id = a.id where u.id = :id")
 				.setParameter("id", id).getSingleResult();
 		
-		return (UserNativeQuery)result;
+		return result;
 	}
 }

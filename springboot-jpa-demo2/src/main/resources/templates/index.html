@@ -115,14 +115,14 @@
 			var _city = $("#city").val();
 			var _address = $("#address").val();
 			
-			$.post("/address/save", {
+			$.post("/address/save.do", {
 				label : _label,
 				country : _country,
 				province : _province,
 				city : _city,
-				addressDetail : _address
+				address : _address
 			}, function(data) {
-				alert(data);
+				alert(data.msg);
 			});
 		});
  
@@ -147,8 +147,10 @@
 			});
 		});
  
-		$("#findAll").on('click',function() {
-					$.post("/webuser/findAll", {
+		$("#findAll").on(
+				'click',
+				function() {
+					$.post("/WebUser/findAll.do", {
 						page : $("#page").val(),
 						size : $("#size").val(),
 						sortColumn : $("#sortColumn").val(),

@@ -1,7 +1,5 @@
 package com.xgj.service.impl;
-/**
- *  多表联查示例1
- */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +40,9 @@ public class AddressServiceImpl implements AddressService {
 					
 					if(null!=address.getId()&&!"".equals(address.getId()))
 						predicates.add(criteriaBuilder.equal(root.get("id").as(Integer.class),address.getId()));
-					//web_user表与address表进行关联查询时，此处外键的管理是重点
 					if(null!=address.getWebUser()&&!"".equals(address.getWebUser()))
 						predicates.add(criteriaBuilder.equal(root.<WebUser>get("webUser").<Integer>get("id"),address.getWebUser().getId()));
+					
 					return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
 				}, pageable);
 		return pageAddress;

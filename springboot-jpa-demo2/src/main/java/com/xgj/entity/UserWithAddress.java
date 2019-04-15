@@ -1,6 +1,6 @@
 package com.xgj.entity;
 
-public class UserWithAddress extends UserNativeQuery{
+public class UserWithAddress extends User{
 	
 	/**
 	 * 

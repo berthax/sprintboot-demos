@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +28,7 @@ public class WebUserController {
 	 * 规则：无输入条件，默认查询全部。默认返回第一页 每页5条，默认asc排序，默认id排序。
 	 */
 	@RequestMapping(value="/findAll",method={RequestMethod.POST,RequestMethod.GET})
-	public Page<WebUser> findAll(@PageableDefault Pageable pageable,@RequestBody WebUser webUser){
+	public Page<WebUser> findAll(@PageableDefault Pageable pageable,WebUser webUser){
 		return webUserService.findAll(webUser, pageable);
 	}
 	
@@ -37,7 +36,7 @@ public class WebUserController {
 	 * 添加
 	 */
 	@PostMapping(value="/save.do")
-	public String save(@RequestBody WebUser webUser){
+	public String save(WebUser webUser){
 		webUser.setGmtCreate(new Date());
 		webUser.setIsValid(1);
 		webUser.setVersion(2);
@@ -50,5 +49,6 @@ public class WebUserController {
 		else 
 			return "fail";
 	}
+
 
 }
