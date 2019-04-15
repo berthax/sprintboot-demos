@@ -35,4 +35,9 @@ public class UserController {
 		return userService.getUserWithAddrByid(id);
 	}
 	
+	@GetMapping("/list/detail2")
+	public UserNativeQuery getUserListDetail2(@RequestParam int id) {
+		return userRespository.getUserWithAddrByid(id);
+	}
+	
 }

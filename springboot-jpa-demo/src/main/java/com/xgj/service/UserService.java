@@ -46,11 +46,12 @@ public class UserService {
 				"select u.id id,u.age age,u.name name,a.name aname,a.completeaddress address from user u left join address a on u.address_id = a.id where u.id = :id")
 				.setParameter("id", id).getSingleResult();*/
 		
-		Object result = entityManager.createNativeQuery(
-				"select u.id id,u.age age,u.address_id address_id, u.name name,a.label label,a.address_detail address_detail from user u left join address a on u.address_id = a.id where u.id = :id",
-				UserNativeQuery.class)
-				.setParameter("id", id).getSingleResult();
+		Object result = entityManager.createNativeQuery("select u.id id,u.age age,u.address_id address_id, u.name name,a.label label,a.address_detail address_detail from user u left join address a on u.address_id = a.id where u.id = :id",
+									UserNativeQuery.class)
+				.setParameter("id", id)
+				.getSingleResult();
 		
+		//注意此处获得的结果，label和addressDetail是没有值的，显示为null，原因是什么呢
 		return (UserNativeQuery)result;
 	}
 }
